@@ -1,0 +1,35 @@
+Kernel Name,Optimization Level,Wilcoxon Test p-value,Faster Kernel
+Axpy,O0,0.651,-
+Dot Product,O0,1.74e-09,Automatically Modified
+Convolution 1D,O0,3.35e-09,Automatically Modified
+Auto-covariance,O0,1.63e-09,Automatically Modified
+Hotspot - 3D,O0,1.63e-09,Automatically Modified
+NN - Forward Phase,O0,1.63e-09,Automatically Modified
+BFS,O0,1.11e-09,Automatically Modified
+PageRank,O0,1.11e-09,Automatically Modified
+Matrix Multiplication,O0,2.56e-06,Automatically Modified
+Hotspot,O0,1.11e-09,Automatically Modified
+NN - Backpropagation,O0,1.63e-09,Automatically Modified
+Gaussian Elimination,O0,2.4e-09,Automatically Modified
+Histogram,O0,1.12e-08,Automatically Modified
+LU Decomposition,O0,1.63e-09,Automatically Modified
+Needleman-Wunsch,O0,1.04e-08,Automatically Modified
+Nested Loops,O0,0.735,-
+Axpy,O2,0.925,-
+Dot Product,O2,6.4e-07,Automatically Modified
+Convolution 1D,O2,4.8e-09,Automatically Modified
+Auto-covariance,O2,1.11e-08,Automatically Modified
+Hotspot - 3D,O2,1.63e-09,Manually Modified
+NN - Forward Phase,O2,1.63e-09,Manually Modified
+BFS,O2,4.63e-06,Automatically Modified
+PageRank,O2,1.29e-07,Manually Modified
+Matrix Multiplication,O2,0.0332,-
+Hotspot,O2,1.21e-07,Manually Modified
+NN - Backpropagation,O2,1.63e-09,Manually Modified
+Gaussian Elimination,O2,1.63e-09,Manually Modified
+Histogram,O2,0.0223,-
+LU Decomposition,O2,1.11e-09,Manually Modified
+Needleman-Wunsch,O2,0.000181,Manually Modified
+Nested Loops,O2,0.03,-
+"Overall, Harmonic Mean",O0,9.16e-05,Automatically Modified
+"Overall, Harmonic Mean",O2,0.13,-
