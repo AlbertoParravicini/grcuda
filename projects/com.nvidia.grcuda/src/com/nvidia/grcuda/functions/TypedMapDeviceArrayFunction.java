@@ -44,12 +44,12 @@ import com.oracle.truffle.api.library.ExportMessage;
 @ExportLibrary(InteropLibrary.class)
 public final class TypedMapDeviceArrayFunction extends Function {
 
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
     private final Type elementType;
 
-    public TypedMapDeviceArrayFunction(AbstractGrCUDAExecutionContext grCUDAExecutionContext, Type elementType) {
+    public TypedMapDeviceArrayFunction(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, Type elementType) {
         super("TypedMapDeviceArray");
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
         this.elementType = elementType;
     }
 
@@ -60,6 +60,6 @@ public final class TypedMapDeviceArrayFunction extends Function {
             CompilerDirectives.transferToInterpreter();
             throw ArityException.create(1, arguments.length);
         }
-        return mapNode.execute(arguments[0], elementType, grCUDAExecutionContext);
+        return mapNode.execute(arguments[0], elementType, GrCUDAExecutionContext);
     }
 }

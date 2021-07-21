@@ -1038,26 +1038,26 @@ public final class CUDARuntime {
     private HashMap<String, CUModule> loadedModules = new HashMap<>();
 
 //    @TruffleBoundary
-//    public Kernel loadKernel(AbstractGrCUDAExecutionContext grCUDAExecutionContext, String cubinFile, String kernelName, String signature) {
+//    public Kernel loadKernel(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, String cubinFile, String kernelName, String signature) {
 //        CUModule module = loadedModules.get(cubinFile);
 //        try {
 //            if (module == null) {
 //                module = cuModuleLoad(cubinFile);
 //            }
 //            long kernelFunction = cuModuleGetFunction(module, kernelName);
-//            return new Kernel(grCUDAExecutionContext, kernelName, module, kernelFunction, signature);
+//            return new Kernel(GrCUDAExecutionContext, kernelName, module, kernelFunction, signature);
 //        } catch (Exception e) {
 //            if ((module != null) && (module.getRefCount() == 1)) {
 //                cuModuleUnload(module);
 //            }
 //            throw e;
     @TruffleBoundary
-    public Kernel loadKernel(AbstractGrCUDAExecutionContext grCUDAExecutionContext, Binding binding) {
-        return loadKernel(grCUDAExecutionContext, binding.getLibraryFileName(), binding.getName(), binding.getSymbolName(), binding.getNIDLParameterSignature());
+    public Kernel loadKernel(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, Binding binding) {
+        return loadKernel(GrCUDAExecutionContext, binding.getLibraryFileName(), binding.getName(), binding.getSymbolName(), binding.getNIDLParameterSignature());
     }
 
     @TruffleBoundary
-    public Kernel loadKernel(AbstractGrCUDAExecutionContext grCUDAExecutionContext, String cubinFile, String kernelName, String symbolName, String signature) {
+    public Kernel loadKernel(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, String cubinFile, String kernelName, String symbolName, String signature) {
         CUModule module = loadedModules.get(cubinFile);
         if (module == null) {
             // load module as it is not yet loaded
@@ -1065,17 +1065,17 @@ public final class CUDARuntime {
             loadedModules.put(cubinFile, module);
         }
         long kernelFunction = cuModuleGetFunction(module, symbolName);
-        return new Kernel(grCUDAExecutionContext, kernelName, symbolName, kernelFunction, signature, module);
+        return new Kernel(GrCUDAExecutionContext, kernelName, symbolName, kernelFunction, signature, module);
     }
 
     @TruffleBoundary
-    public Kernel buildKernel(AbstractGrCUDAExecutionContext grCUDAExecutionContext, String code, String kernelName, String signature) {
+    public Kernel buildKernel(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, String code, String kernelName, String signature) {
         String moduleName = "truffle" + context.getNextModuleId();
         PTXKernel ptx = nvrtc.compileKernel(code, kernelName, moduleName, "--std=c++14");
         CUModule module = cuModuleLoadData(ptx.getPtxSource(), moduleName);
         loadedModules.put(moduleName, module);
         long kernelFunctionHandle = cuModuleGetFunction(module, ptx.getLoweredKernelName());
-        return new Kernel(grCUDAExecutionContext, kernelName, ptx.getLoweredKernelName(), kernelFunctionHandle,
+        return new Kernel(GrCUDAExecutionContext, kernelName, ptx.getLoweredKernelName(), kernelFunctionHandle,
                         signature, module, ptx.getPtxSource());
     }
 

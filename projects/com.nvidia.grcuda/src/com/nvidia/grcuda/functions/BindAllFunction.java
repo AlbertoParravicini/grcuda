@@ -48,13 +48,13 @@ import com.oracle.truffle.api.interop.UnsupportedTypeException;
 
 public class BindAllFunction extends Function {
 
-    @SuppressWarnings("unused") private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    @SuppressWarnings("unused") private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
 
     private final GrCUDAContext context;
 
     public BindAllFunction(GrCUDAContext context) {
         super("bindall");
-        this.grCUDAExecutionContext = context.getGrCUDAExecutionContext();
+        this.GrCUDAExecutionContext = context.getGrCUDAExecutionContext();
         this.context = context;
     }
 
@@ -88,10 +88,10 @@ public class BindAllFunction extends Function {
             throw new GrCUDAException("kernel and host function binding specified, can either bind kernel or host function");
         }
         if (kernelBindingPresent) {
-            bindings.forEach(binding -> namespaceTriple.leafNamespace.addKernel(new LazyKernel((KernelBinding) binding, grCUDAExecutionContext)));
+            bindings.forEach(binding -> namespaceTriple.leafNamespace.addKernel(new LazyKernel((KernelBinding) binding, GrCUDAExecutionContext)));
         }
         if (functionBindingPresent) {
-            bindings.forEach(binding -> namespaceTriple.leafNamespace.addFunction(new HostFunction((FunctionBinding) binding, grCUDAExecutionContext.getCudaRuntime())));
+            bindings.forEach(binding -> namespaceTriple.leafNamespace.addFunction(new HostFunction((FunctionBinding) binding, GrCUDAExecutionContext.getCudaRuntime())));
         }
 
         if (namespaceTriple.childNamespace == null) {
