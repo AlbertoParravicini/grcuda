@@ -18,12 +18,12 @@ public class KernelExecutionMock extends GrCUDAComputationalElement {
      */
     private int durationMs = 0;
 
-    public KernelExecutionMock(AbstractGrCUDAExecutionContext grCUDAExecutionContext, List<ComputationArgumentWithValue> args) {
-        super(grCUDAExecutionContext, args);
+    public KernelExecutionMock(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, List<ComputationArgumentWithValue> args) {
+        super(GrCUDAExecutionContext, args);
     }
 
-    public KernelExecutionMock(AbstractGrCUDAExecutionContext grCUDAExecutionContext, List<ComputationArgumentWithValue> args, int durationMs) {
-        super(grCUDAExecutionContext, args);
+    public KernelExecutionMock(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, List<ComputationArgumentWithValue> args, int durationMs) {
+        super(GrCUDAExecutionContext, args);
         this.durationMs = durationMs;
     }
 

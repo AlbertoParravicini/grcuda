@@ -78,7 +78,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @GenerateUncached
 abstract class MapArrayNode extends Node {
 
-    abstract Object execute(Object source, Type elementType, AbstractGrCUDAExecutionContext grCUDAExecutionContext);
+    abstract Object execute(Object source, Type elementType, AbstractGrCUDAExecutionContext GrCUDAExecutionContext);
 
     private static final FrameDescriptor DESCRIPTOR = new FrameDescriptor();
     private static final FrameSlot SIZE_SLOT = DESCRIPTOR.addFrameSlot("size", FrameSlotKind.Long);
@@ -173,7 +173,7 @@ abstract class MapArrayNode extends Node {
     }
 
     @Specialization(limit = "3")
-    Object doMap(Object source, Type elementType, AbstractGrCUDAExecutionContext grCUDAExecutionContext,
+    Object doMap(Object source, Type elementType, AbstractGrCUDAExecutionContext GrCUDAExecutionContext,
                     @CachedLibrary("source") InteropLibrary interop,
                     @CachedContext(GrCUDALanguage.class) @SuppressWarnings("unused") GrCUDAContext context,
                     @Cached(value = "createLoop(source)", uncached = "createUncachedLoop(source, context)") CallTarget loop) {
@@ -194,7 +194,7 @@ abstract class MapArrayNode extends Node {
             CompilerDirectives.transferToInterpreter();
             throw new GrCUDAException("cannot read array size");
         }
-        DeviceArray result = new DeviceArray(grCUDAExecutionContext, size, elementType);
+        DeviceArray result = new DeviceArray(GrCUDAExecutionContext, size, elementType);
         loop.call(size, source, result);
         return result;
     }
@@ -208,11 +208,11 @@ abstract class MapArrayNode extends Node {
 @ExportLibrary(InteropLibrary.class)
 public final class MapDeviceArrayFunction extends Function {
 
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
 
-    public MapDeviceArrayFunction(AbstractGrCUDAExecutionContext grCUDAExecutionContext) {
+    public MapDeviceArrayFunction(AbstractGrCUDAExecutionContext GrCUDAExecutionContext) {
         super("MapDeviceArray");
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
     }
 
     @ExportMessage
@@ -239,13 +239,13 @@ public final class MapDeviceArrayFunction extends Function {
             throw new GrCUDAInternalException(e.getMessage());
         }
         if (arguments.length == 1) {
-            return new TypedMapDeviceArrayFunction(grCUDAExecutionContext, elementType);
+            return new TypedMapDeviceArrayFunction(GrCUDAExecutionContext, elementType);
         } else {
             if (arguments.length != 2) {
                 CompilerDirectives.transferToInterpreter();
                 throw ArityException.create(2, arguments.length);
             }
-            return mapNode.execute(arguments[1], elementType, grCUDAExecutionContext);
+            return mapNode.execute(arguments[1], elementType, GrCUDAExecutionContext);
         }
     }
 }

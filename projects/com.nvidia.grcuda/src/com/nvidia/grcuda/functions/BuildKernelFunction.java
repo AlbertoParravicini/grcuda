@@ -35,11 +35,11 @@ import com.oracle.truffle.api.interop.ArityException;
 import com.oracle.truffle.api.interop.UnsupportedTypeException;
 
 public class BuildKernelFunction extends Function {
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
 
-    public BuildKernelFunction(AbstractGrCUDAExecutionContext grCUDAExecutionContext) {
+    public BuildKernelFunction(AbstractGrCUDAExecutionContext GrCUDAExecutionContext) {
         super("buildkernel");
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class BuildKernelFunction extends Function {
             kernelName = kernelNameSignaturePair.getKernelName();
             parameterSignature = kernelNameSignaturePair.getParameterSignature();
         }
-        return grCUDAExecutionContext.buildKernel(code, kernelName, parameterSignature);
+        return GrCUDAExecutionContext.buildKernel(code, kernelName, parameterSignature);
     }
 
     private static KernelNameSignaturePair parseSignature(String signature) {

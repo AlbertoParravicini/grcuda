@@ -60,7 +60,7 @@ import com.oracle.truffle.api.library.ExportMessage;
 @ExportLibrary(InteropLibrary.class)
 public class Kernel implements TruffleObject {
 
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
     private final String kernelName;
     private final String kernelSymbol;
     private final long nativeKernelFunctionHandle;
@@ -72,23 +72,23 @@ public class Kernel implements TruffleObject {
     /**
      * Create a kernel without PTX code.
      *
-     * @param grCUDAExecutionContext captured reference to the GrCUDA execution context
+     * @param GrCUDAExecutionContext captured reference to the GrCUDA execution context
      * @param kernelName name of the kernel as exposed through Truffle
      * @param kernelSymbol name of the kernel symbol*
      * @param kernelFunction native pointer to the kernel function (CUfunction)
      * @param kernelSignature signature string of the kernel (NFI or NIDL)
      * @param module CUmodule that contains the kernel function
      */
-    public Kernel(AbstractGrCUDAExecutionContext grCUDAExecutionContext, String kernelName,
+    public Kernel(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, String kernelName,
                     String kernelSymbol, long kernelFunction,
                     String kernelSignature, CUModule module) {
-        this(grCUDAExecutionContext, kernelName, kernelSymbol, kernelFunction, kernelSignature, module, "");
+        this(GrCUDAExecutionContext, kernelName, kernelSymbol, kernelFunction, kernelSignature, module, "");
     }
 
     /**
      * Create a kernel and hold on to the PTX code.
      *
-     * @param grCUDAExecutionContext captured reference to the GrCUDA execution context
+     * @param GrCUDAExecutionContext captured reference to the GrCUDA execution context
      * @param kernelName name of kernel as exposed through Truffle
      * @param kernelSymbol name of the kernel symbol
      * @param kernelFunction native pointer to the kernel function (CUfunction)
@@ -96,7 +96,7 @@ public class Kernel implements TruffleObject {
      * @param module CUmodule that contains the kernel function
      * @param ptx PTX source code for the kernel.
      */
-    public Kernel(AbstractGrCUDAExecutionContext grCUDAExecutionContext, String kernelName, String kernelSymbol,
+    public Kernel(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, String kernelName, String kernelSymbol,
                     long kernelFunction, String kernelSignature, CUModule module, String ptx) {
 //        parseSignature(kernelSignature);
         try {
@@ -107,13 +107,13 @@ public class Kernel implements TruffleObject {
             CompilerDirectives.transferToInterpreter();
             throw new GrCUDAException(e.getMessage());
         }
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
         this.kernelName = kernelName;
         this.kernelSymbol = kernelSymbol;
         this.nativeKernelFunctionHandle = kernelFunction;
         this.module = module;
         this.ptxCode = ptx;
-        this.grCUDAExecutionContext.registerKernel(this);
+        this.GrCUDAExecutionContext.registerKernel(this);
     }
 
     public void incrementLaunchCount() {
@@ -121,7 +121,7 @@ public class Kernel implements TruffleObject {
     }
 
     public AbstractGrCUDAExecutionContext getGrCUDAExecutionContext() {
-        return grCUDAExecutionContext;
+        return GrCUDAExecutionContext;
     }
 
     public ComputationArgument[] getKernelParameters() {

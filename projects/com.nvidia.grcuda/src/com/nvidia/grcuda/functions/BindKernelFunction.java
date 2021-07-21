@@ -42,11 +42,11 @@ import com.oracle.truffle.api.interop.UnsupportedTypeException;
 
 public final class BindKernelFunction extends Function {
 
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
 
-    public BindKernelFunction(AbstractGrCUDAExecutionContext grCUDAExecutionContext) {
+    public BindKernelFunction(AbstractGrCUDAExecutionContext GrCUDAExecutionContext) {
         super("bindkernel");
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
     }
 
     @Override
@@ -102,7 +102,7 @@ public final class BindKernelFunction extends Function {
             binding = parseSignature(signature);
         }
         binding.setLibraryFileName(fileName);
-        return grCUDAExecutionContext.loadKernel(binding);
+        return GrCUDAExecutionContext.loadKernel(binding);
     }
 
     private static KernelBinding parseSignature(String signature) {

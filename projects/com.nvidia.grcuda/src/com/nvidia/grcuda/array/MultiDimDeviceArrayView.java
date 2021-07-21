@@ -54,7 +54,7 @@ public final class MultiDimDeviceArrayView extends AbstractArray implements Truf
     private final long stride;
 
     MultiDimDeviceArrayView(MultiDimDeviceArray mdDeviceArray, int dim, long offset, long stride) {
-        super(mdDeviceArray.grCUDAExecutionContext, mdDeviceArray.elementType, mdDeviceArray.isLastComputationArrayAccess());
+        super(mdDeviceArray.GrCUDAExecutionContext, mdDeviceArray.elementType, mdDeviceArray.isLastComputationArrayAccess());
         this.mdDeviceArray = mdDeviceArray;
         this.thisDimension = dim;
         this.offset = offset; // Index at which this array view starts;

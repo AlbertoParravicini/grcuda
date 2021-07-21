@@ -46,12 +46,12 @@ public final class LazyKernel implements TruffleObject {
     public static final InteropLibrary INTEROP = InteropLibrary.getFactory().getUncached();
 
     private final KernelBinding binding;
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
     private Kernel kernel;
 
-    public LazyKernel(KernelBinding binding, AbstractGrCUDAExecutionContext grCUDAExecutionContext) {
+    public LazyKernel(KernelBinding binding, AbstractGrCUDAExecutionContext GrCUDAExecutionContext) {
         this.binding = binding;
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
     }
 
     public String getKernelName() {
@@ -103,7 +103,7 @@ public final class LazyKernel implements TruffleObject {
     private void assertKernelLoaded() {
         synchronized (this) {
             if (kernel == null) {
-                kernel = grCUDAExecutionContext.loadKernel(binding);
+                kernel = GrCUDAExecutionContext.loadKernel(binding);
                 assert kernel != null : "Loaded kernel non-null";
             }
         }

@@ -59,7 +59,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Context for the grCUDA language holds reference to CUDA runtime, a function registry and device
+ * Context for the GrCUDA language holds reference to CUDA runtime, a function registry and device
  * resources.
  */
 public final class GrCUDAContext {
@@ -73,7 +73,7 @@ public final class GrCUDAContext {
     private static final String ROOT_NAMESPACE = "CU";
 
     private final Env env;
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
     private final Namespace rootNamespace;
     private final ArrayList<Runnable> disposables = new ArrayList<>();
     private final AtomicInteger moduleId = new AtomicInteger(0);
@@ -111,27 +111,27 @@ public final class GrCUDAContext {
         System.out.println("-- using " + executionPolicy.getName() + " execution policy");
         switch (executionPolicy) {
             case SYNC:
-                this.grCUDAExecutionContext = new SyncGrCUDAExecutionContext(this, env, dependencyPolicy, inputPrefetch ? PrefetcherEnum.SYNC : PrefetcherEnum.NONE);
+                this.GrCUDAExecutionContext = new SyncGrCUDAExecutionContext(this, env, dependencyPolicy, inputPrefetch ? PrefetcherEnum.SYNC : PrefetcherEnum.NONE);
                 break;
             case DEFAULT:
-                this.grCUDAExecutionContext = new GrCUDAExecutionContext(this, env ,dependencyPolicy, inputPrefetch ? PrefetcherEnum.DEFAULT : PrefetcherEnum.NONE);
+                this.GrCUDAExecutionContext = new GrCUDAExecutionContext(this, env ,dependencyPolicy, inputPrefetch ? PrefetcherEnum.DEFAULT : PrefetcherEnum.NONE);
                 break;
             default:
-                this.grCUDAExecutionContext = new GrCUDAExecutionContext(this, env, dependencyPolicy, inputPrefetch ? PrefetcherEnum.DEFAULT : PrefetcherEnum.NONE);
+                this.GrCUDAExecutionContext = new GrCUDAExecutionContext(this, env, dependencyPolicy, inputPrefetch ? PrefetcherEnum.DEFAULT : PrefetcherEnum.NONE);
         }
 
         Namespace namespace = new Namespace(ROOT_NAMESPACE);
         namespace.addNamespace(namespace);
         namespace.addFunction(new BindFunction());
-        namespace.addFunction(new DeviceArrayFunction(this.grCUDAExecutionContext));
+        namespace.addFunction(new DeviceArrayFunction(this.GrCUDAExecutionContext));
         namespace.addFunction(new BindAllFunction(this));
         namespace.addFunction(new MapFunction());
         namespace.addFunction(new ShredFunction());
-        namespace.addFunction(new BindKernelFunction(this.grCUDAExecutionContext));
-        namespace.addFunction(new BuildKernelFunction(this.grCUDAExecutionContext));
-        namespace.addFunction(new GetDevicesFunction(this.grCUDAExecutionContext.getCudaRuntime()));
-        namespace.addFunction(new GetDeviceFunction(this.grCUDAExecutionContext.getCudaRuntime()));
-        this.grCUDAExecutionContext.getCudaRuntime().registerCUDAFunctions(namespace);
+        namespace.addFunction(new BindKernelFunction(this.GrCUDAExecutionContext));
+        namespace.addFunction(new BuildKernelFunction(this.GrCUDAExecutionContext));
+        namespace.addFunction(new GetDevicesFunction(this.GrCUDAExecutionContext.getCudaRuntime()));
+        namespace.addFunction(new GetDeviceFunction(this.GrCUDAExecutionContext.getCudaRuntime()));
+        this.GrCUDAExecutionContext.getCudaRuntime().registerCUDAFunctions(namespace);
         if (this.getOption(GrCUDAOptions.CuMLEnabled)) {
             Namespace ml = new Namespace(CUMLRegistry.NAMESPACE);
             namespace.addNamespace(ml);
@@ -155,11 +155,11 @@ public final class GrCUDAContext {
     }
 
     public AbstractGrCUDAExecutionContext getGrCUDAExecutionContext() {
-        return grCUDAExecutionContext;
+        return GrCUDAExecutionContext;
     }
 
     public CUDARuntime getCUDARuntime() {
-        return this.grCUDAExecutionContext.getCudaRuntime();
+        return this.GrCUDAExecutionContext.getCudaRuntime();
     }
 
     public Namespace getRootNamespace() {
@@ -274,6 +274,6 @@ public final class GrCUDAContext {
      * Cleanup the GrCUDA context at the end of the execution;
      */
     public void cleanup() {
-        this.grCUDAExecutionContext.cleanup();
+        this.GrCUDAExecutionContext.cleanup();
     }
 }

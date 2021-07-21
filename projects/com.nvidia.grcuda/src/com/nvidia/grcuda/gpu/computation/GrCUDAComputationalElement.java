@@ -27,7 +27,7 @@ public abstract class GrCUDAComputationalElement {
     /**
      * Reference to the execution context where this computation is executed;
      */
-    protected final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    protected final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
     /**
      * Reference to the stream where this computation will be executed,
      * if possible (i.e. if the computation can be executed on a custom stream).
@@ -60,23 +60,23 @@ public abstract class GrCUDAComputationalElement {
 
     /**
      * Constructor that takes an argument set initializer to build the set of arguments used in the dependency computation
-     * @param grCUDAExecutionContext execution context in which this computational element will be scheduled
+     * @param GrCUDAExecutionContext execution context in which this computational element will be scheduled
      * @param initializer the initializer used to build the internal set of arguments considered in the dependency computation
      */
-    public GrCUDAComputationalElement(AbstractGrCUDAExecutionContext grCUDAExecutionContext, InitializeArgumentList initializer) {
+    public GrCUDAComputationalElement(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, InitializeArgumentList initializer) {
         this.argumentList = initializer.initialize();
         // Initialize by making a copy of the original set;
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
-        this.dependencyComputation = grCUDAExecutionContext.getDependencyBuilder().initialize(this.argumentList);
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
+        this.dependencyComputation = GrCUDAExecutionContext.getDependencyBuilder().initialize(this.argumentList);
     }
 
     /**
      * Simplified constructor that takes a list of arguments, and consider all of them in the dependency computation
-     * @param grCUDAExecutionContext execution context in which this computational element will be scheduled
+     * @param GrCUDAExecutionContext execution context in which this computational element will be scheduled
      * @param args the list of arguments provided to the computation. Arguments are expected to be {@link org.graalvm.polyglot.Value}
      */
-    public GrCUDAComputationalElement(AbstractGrCUDAExecutionContext grCUDAExecutionContext, List<ComputationArgumentWithValue> args) {
-        this(grCUDAExecutionContext, new DefaultExecutionInitializer(args));
+    public GrCUDAComputationalElement(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, List<ComputationArgumentWithValue> args) {
+        this(GrCUDAExecutionContext, new DefaultExecutionInitializer(args));
     }
 
     public List<ComputationArgumentWithValue> getArgumentList() {
@@ -99,7 +99,7 @@ public abstract class GrCUDAComputationalElement {
      * as we need to ensure that the the computational element subclass has been completely instantiated;
      */
     public Object schedule() throws UnsupportedTypeException {
-        return this.grCUDAExecutionContext.registerExecution(this);
+        return this.GrCUDAExecutionContext.registerExecution(this);
     }
 
     /**
@@ -168,7 +168,7 @@ public abstract class GrCUDAComputationalElement {
      * By default, the implementation is empty, as {@link GrCUDAComputationalElement#canUseStream} is false;
      */
     public final void associateArraysToStream() {
-        grCUDAExecutionContext.getArrayStreamArchitecturePolicy().execute(this::associateArraysToStreamImpl);
+        GrCUDAExecutionContext.getArrayStreamArchitecturePolicy().execute(this::associateArraysToStreamImpl);
     }
 
     /**
@@ -214,7 +214,7 @@ public abstract class GrCUDAComputationalElement {
      * @return An additional stream to synchronize
      */
     public final Optional<CUDAStream> additionalStreamDependency() {
-        return grCUDAExecutionContext.getArrayStreamArchitecturePolicy().execute(this::additionalStreamDependencyImpl);
+        return GrCUDAExecutionContext.getArrayStreamArchitecturePolicy().execute(this::additionalStreamDependencyImpl);
     }
 
     /**
