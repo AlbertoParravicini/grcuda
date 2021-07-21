@@ -69,9 +69,9 @@ public class MultiDimDeviceArray extends AbstractArray implements TruffleObject 
     /** Mutable view onto the underlying memory buffer. */
     private final LittleEndianNativeArrayView nativeView;
 
-    public MultiDimDeviceArray(AbstractGrCUDAExecutionContext grCUDAExecutionContext, Type elementType, long[] dimensions,
+    public MultiDimDeviceArray(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, Type elementType, long[] dimensions,
                                boolean useColumnMajor) {
-        super(grCUDAExecutionContext, elementType);
+        super(GrCUDAExecutionContext, elementType);
         if (dimensions.length < 2) {
             CompilerDirectives.transferToInterpreter();
             throw new IllegalArgumentException(
@@ -91,7 +91,7 @@ public class MultiDimDeviceArray extends AbstractArray implements TruffleObject 
         System.arraycopy(dimensions, 0, this.elementsPerDimension, 0, dimensions.length);
         this.stridePerDimension = computeStride(dimensions, columnMajor);
         this.numElements = prod;
-        this.nativeView = grCUDAExecutionContext.getCudaRuntime().cudaMallocManaged(getSizeBytes());
+        this.nativeView = GrCUDAExecutionContext.getCudaRuntime().cudaMallocManaged(getSizeBytes());
         // Register the array in the GrCUDAExecutionContext;
         this.registerArray();
     }
@@ -186,7 +186,7 @@ public class MultiDimDeviceArray extends AbstractArray implements TruffleObject 
     @Override
     protected void finalize() throws Throwable {
         if (!arrayFreed) {
-            grCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
+            GrCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
         }
         super.finalize();
     }
@@ -196,7 +196,7 @@ public class MultiDimDeviceArray extends AbstractArray implements TruffleObject 
         if (arrayFreed) {
             throw new GrCUDAException("device array already freed");
         }
-        grCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
+        GrCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
         arrayFreed = true;
     }
 

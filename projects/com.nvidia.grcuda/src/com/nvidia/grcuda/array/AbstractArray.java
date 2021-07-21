@@ -43,7 +43,7 @@ public abstract class AbstractArray implements TruffleObject {
     /**
      * Reference to the underlying CUDA runtime that manages the array memory.
      */
-    protected final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    protected final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
 
     /**
      * Data type of elements stored in the array.
@@ -76,13 +76,13 @@ public abstract class AbstractArray implements TruffleObject {
         return elementType;
     }
 
-    protected AbstractArray(AbstractGrCUDAExecutionContext grCUDAExecutionContext, Type elementType) {
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+    protected AbstractArray(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, Type elementType) {
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
         this.elementType = elementType;
     }
 
-    protected AbstractArray(AbstractGrCUDAExecutionContext grCUDAExecutionContext, Type elementType, boolean isLastComputationArrayAccess) {
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+    protected AbstractArray(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, Type elementType, boolean isLastComputationArrayAccess) {
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
         this.elementType = elementType;
         this.isLastComputationArrayAccess = isLastComputationArrayAccess;
     }
@@ -94,13 +94,13 @@ public abstract class AbstractArray implements TruffleObject {
      */
     protected void registerArray() {
         if (!this.registeredInContext) {
-            this.grCUDAExecutionContext.registerArray(this);
+            this.GrCUDAExecutionContext.registerArray(this);
             this.registeredInContext = true;
         }
     }
 
     public AbstractGrCUDAExecutionContext getGrCUDAExecutionContext() {
-        return grCUDAExecutionContext;
+        return GrCUDAExecutionContext;
     }
 
     public CUDAStream getStreamMapping() {
@@ -132,7 +132,7 @@ public abstract class AbstractArray implements TruffleObject {
      * @return if this array can be accessed by the host without scheduling a computation
      */
     protected boolean canSkipScheduling() {
-        return this.isLastComputationArrayAccess() && !(this.streamMapping.isDefaultStream() && grCUDAExecutionContext.isAnyComputationActive());
+        return this.isLastComputationArrayAccess() && !(this.streamMapping.isDefaultStream() && GrCUDAExecutionContext.isAnyComputationActive());
     }
 
     // Implementation of InteropLibrary

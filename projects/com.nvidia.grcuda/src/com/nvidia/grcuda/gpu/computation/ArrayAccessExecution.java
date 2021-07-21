@@ -14,8 +14,8 @@ public abstract class ArrayAccessExecution<T extends AbstractArray> extends GrCU
     protected boolean isComputationArrayAccess = true;
     protected T array;
 
-    public ArrayAccessExecution(AbstractGrCUDAExecutionContext grCUDAExecutionContext, InitializeArgumentList initializer, T array) {
-        super(grCUDAExecutionContext, initializer);
+    public ArrayAccessExecution(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, InitializeArgumentList initializer, T array) {
+        super(GrCUDAExecutionContext, initializer);
         this.array = array;
     }
 

@@ -58,7 +58,7 @@ public abstract class ArrayNode extends ExpressionNode {
     @Specialization
     AbstractArray doDefault(VirtualFrame frame,
                             @CachedContext(GrCUDALanguage.class) GrCUDAContext context) {
-        final AbstractGrCUDAExecutionContext grCUDAExecutionContext = context.getGrCUDAExecutionContext();
+        final AbstractGrCUDAExecutionContext GrCUDAExecutionContext = context.getGrCUDAExecutionContext();
         long[] elementsPerDim = new long[sizeNodes.length];
         int dim = 0;
         for (ExpressionNode sizeNode : sizeNodes) {
@@ -71,10 +71,10 @@ public abstract class ArrayNode extends ExpressionNode {
             dim += 1;
         }
         if (sizeNodes.length == 1) {
-            return new DeviceArray(grCUDAExecutionContext, elementsPerDim[0], elementType);
+            return new DeviceArray(GrCUDAExecutionContext, elementsPerDim[0], elementType);
         } else {
             final boolean columnMajorOrder = false;
-            return new MultiDimDeviceArray(grCUDAExecutionContext, elementType, elementsPerDim, columnMajorOrder);
+            return new MultiDimDeviceArray(GrCUDAExecutionContext, elementType, elementsPerDim, columnMajorOrder);
         }
     }
 }

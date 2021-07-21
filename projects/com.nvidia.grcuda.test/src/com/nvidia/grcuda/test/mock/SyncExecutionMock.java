@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
  */
 public class SyncExecutionMock extends GrCUDAComputationalElement {
 
-    public SyncExecutionMock(GrCUDAExecutionContext grCUDAExecutionContext, List<ComputationArgumentWithValue> args) {
-        super(grCUDAExecutionContext, args);
+    public SyncExecutionMock(GrCUDAExecutionContext GrCUDAExecutionContext, List<ComputationArgumentWithValue> args) {
+        super(GrCUDAExecutionContext, args);
     }
 
     @Override

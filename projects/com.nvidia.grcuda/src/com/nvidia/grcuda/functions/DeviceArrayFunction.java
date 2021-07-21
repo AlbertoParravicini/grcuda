@@ -59,11 +59,11 @@ public final class DeviceArrayFunction extends Function {
 
     private static final MemberSet MEMBERS = new MemberSet(MAP);
 
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
 
-    public DeviceArrayFunction(AbstractGrCUDAExecutionContext grCUDAExecutionContext) {
+    public DeviceArrayFunction(AbstractGrCUDAExecutionContext GrCUDAExecutionContext) {
         super("DeviceArray");
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
     }
 
     @Override
@@ -80,13 +80,13 @@ public final class DeviceArrayFunction extends Function {
             throw new GrCUDAException(e.getMessage());
         }
         if (arguments.length == 1) {
-            return new TypedDeviceArrayFunction(grCUDAExecutionContext, elementType);
+            return new TypedDeviceArrayFunction(GrCUDAExecutionContext, elementType);
         } else {
-            return createArray(arguments, 1, elementType, grCUDAExecutionContext);
+            return createArray(arguments, 1, elementType, GrCUDAExecutionContext);
         }
     }
 
-    static Object createArray(Object[] arguments, int start, Type elementType, AbstractGrCUDAExecutionContext grCUDAExecutionContext) throws UnsupportedTypeException {
+    static Object createArray(Object[] arguments, int start, Type elementType, AbstractGrCUDAExecutionContext GrCUDAExecutionContext) throws UnsupportedTypeException {
         ArrayList<Long> elementsPerDim = new ArrayList<>();
         Optional<Boolean> useColumnMajor = Optional.empty();
         for (int i = start; i < arguments.length; ++i) {
@@ -113,10 +113,10 @@ public final class DeviceArrayFunction extends Function {
             }
         }
         if (elementsPerDim.size() == 1) {
-            return new DeviceArray(grCUDAExecutionContext, elementsPerDim.get(0), elementType);
+            return new DeviceArray(GrCUDAExecutionContext, elementsPerDim.get(0), elementType);
         }
         long[] dimensions = elementsPerDim.stream().mapToLong(l -> l).toArray();
-        return new MultiDimDeviceArray(grCUDAExecutionContext, elementType, dimensions, useColumnMajor.orElse(false));
+        return new MultiDimDeviceArray(GrCUDAExecutionContext, elementType, dimensions, useColumnMajor.orElse(false));
     }
 
     @ExportMessage
@@ -144,7 +144,7 @@ public final class DeviceArrayFunction extends Function {
     Object readMember(String memberName,
                     @Shared("memberName") @Cached("createIdentityProfile()") ValueProfile memberProfile) throws UnknownIdentifierException {
         if (MAP.equals(memberProfile.profile(memberName))) {
-            return new MapDeviceArrayFunction(grCUDAExecutionContext);
+            return new MapDeviceArrayFunction(GrCUDAExecutionContext);
         }
         CompilerDirectives.transferToInterpreter();
         throw UnknownIdentifierException.create(memberName);

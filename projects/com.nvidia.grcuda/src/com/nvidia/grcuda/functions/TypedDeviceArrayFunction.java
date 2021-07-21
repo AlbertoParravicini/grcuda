@@ -40,12 +40,12 @@ import com.oracle.truffle.api.interop.UnsupportedTypeException;
  */
 public final class TypedDeviceArrayFunction extends Function {
 
-    private final AbstractGrCUDAExecutionContext grCUDAExecutionContext;
+    private final AbstractGrCUDAExecutionContext GrCUDAExecutionContext;
     private final Type elementType;
 
-    public TypedDeviceArrayFunction(AbstractGrCUDAExecutionContext grCUDAExecutionContext, Type elementType) {
+    public TypedDeviceArrayFunction(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, Type elementType) {
         super("TypedDeviceArray");
-        this.grCUDAExecutionContext = grCUDAExecutionContext;
+        this.GrCUDAExecutionContext = GrCUDAExecutionContext;
         this.elementType = elementType;
     }
 
@@ -56,6 +56,6 @@ public final class TypedDeviceArrayFunction extends Function {
             CompilerDirectives.transferToInterpreter();
             throw ArityException.create(1, arguments.length);
         }
-        return DeviceArrayFunction.createArray(arguments, 0, elementType, grCUDAExecutionContext);
+        return DeviceArrayFunction.createArray(arguments, 0, elementType, GrCUDAExecutionContext);
     }
 }

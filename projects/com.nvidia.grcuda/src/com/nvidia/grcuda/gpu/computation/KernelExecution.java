@@ -40,7 +40,7 @@ public class KernelExecution extends GrCUDAComputationalElement {
 
     @Override
     public Object execute() {
-        grCUDAExecutionContext.getCudaRuntime().cuLaunchKernel(kernel, config, args, this.getStream());
+        GrCUDAExecutionContext.getCudaRuntime().cuLaunchKernel(kernel, config, args, this.getStream());
         return NoneValue.get();
     }
 
@@ -90,11 +90,11 @@ public class KernelExecution extends GrCUDAComputationalElement {
                 if (getDependencyComputation().streamResetAttachFilter(a)) {
                     // If the array was attached to a stream, and now it is a const parameter, reset its visibility to the default stream;
                     if (!array.getStreamMapping().isDefaultStream()) {
-                        grCUDAExecutionContext.getCudaRuntime().cudaStreamAttachMemAsync(DefaultStream.get(), array);
+                        GrCUDAExecutionContext.getCudaRuntime().cudaStreamAttachMemAsync(DefaultStream.get(), array);
                     }
                 } else if (!array.getStreamMapping().equals(this.getStream())) {
                     // Attach the array to the stream if the array isn't already attached to this stream;
-                    grCUDAExecutionContext.getCudaRuntime().cudaStreamAttachMemAsync(this.getStream(), array);
+                    GrCUDAExecutionContext.getCudaRuntime().cudaStreamAttachMemAsync(this.getStream(), array);
                 }
             }
         }

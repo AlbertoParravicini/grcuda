@@ -62,11 +62,11 @@ public final class DeviceArray extends AbstractArray implements TruffleObject {
     /** Mutable view onto the underlying memory buffer. */
     private final LittleEndianNativeArrayView nativeView;
 
-    public DeviceArray(AbstractGrCUDAExecutionContext grCUDAExecutionContext, long numElements, Type elementType) {
-        super(grCUDAExecutionContext, elementType);
+    public DeviceArray(AbstractGrCUDAExecutionContext GrCUDAExecutionContext, long numElements, Type elementType) {
+        super(GrCUDAExecutionContext, elementType);
         this.numElements = numElements;
         this.sizeBytes = numElements * elementType.getSizeBytes();
-        this.nativeView = grCUDAExecutionContext.getCudaRuntime().cudaMallocManaged(sizeBytes);
+        this.nativeView = GrCUDAExecutionContext.getCudaRuntime().cudaMallocManaged(sizeBytes);
         // Register the array in the GrCUDAExecutionContext;
         this.registerArray();
     }
@@ -109,7 +109,7 @@ public final class DeviceArray extends AbstractArray implements TruffleObject {
     @Override
     protected void finalize() throws Throwable {
         if (!arrayFreed) {
-            grCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
+            GrCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
         }
         super.finalize();
     }
@@ -145,7 +145,7 @@ public final class DeviceArray extends AbstractArray implements TruffleObject {
         if (arrayFreed) {
             throw new GrCUDAException("device array already freed");
         }
-        grCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
+        GrCUDAExecutionContext.getCudaRuntime().cudaFree(nativeView);
         arrayFreed = true;
     }
 

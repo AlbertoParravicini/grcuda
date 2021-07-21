@@ -61,9 +61,9 @@ public class ArrayReadWriteFunctionExecution extends GrCUDAComputationalElement 
         }
         // If the array visibility is restricted to a stream, provide the stream to memcpy;
         if (array.getStreamMapping().isDefaultStream()) {
-            grCUDAExecutionContext.getCudaRuntime().cudaMemcpy(array.getPointer(), pointer, numBytesToCopy);
+            GrCUDAExecutionContext.getCudaRuntime().cudaMemcpy(array.getPointer(), pointer, numBytesToCopy);
         } else {
-            grCUDAExecutionContext.getCudaRuntime().cudaMemcpy(array.getPointer(), pointer, numBytesToCopy, array.getStreamMapping());
+            GrCUDAExecutionContext.getCudaRuntime().cudaMemcpy(array.getPointer(), pointer, numBytesToCopy, array.getStreamMapping());
         }
     }
 
@@ -75,9 +75,9 @@ public class ArrayReadWriteFunctionExecution extends GrCUDAComputationalElement 
         }
         // If the array visibility is restricted to a stream, provide the stream to memcpy;
         if (array.getStreamMapping().isDefaultStream()) {
-            grCUDAExecutionContext.getCudaRuntime().cudaMemcpy(pointer, array.getPointer(), numBytesToCopy);
+            GrCUDAExecutionContext.getCudaRuntime().cudaMemcpy(pointer, array.getPointer(), numBytesToCopy);
         } else {
-            grCUDAExecutionContext.getCudaRuntime().cudaMemcpy(pointer, array.getPointer(), numBytesToCopy, array.getStreamMapping());
+            GrCUDAExecutionContext.getCudaRuntime().cudaMemcpy(pointer, array.getPointer(), numBytesToCopy, array.getStreamMapping());
         }
     }
 
